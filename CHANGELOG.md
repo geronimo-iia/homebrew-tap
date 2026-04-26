@@ -4,6 +4,13 @@ All notable changes to this tap will be documented in this file.
 
 ## [Unreleased]
 
+## 2026-04-26
+
+### Changed
+
+- `llm-wiki` formula updated to v0.1.1 — crate renamed to `llm-wiki-engine`
+  on crates.io; binary name and install command unchanged
+
 ## 2025-07-20
 
 ### Added
