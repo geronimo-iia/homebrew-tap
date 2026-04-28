@@ -2,7 +2,13 @@
 
 All notable changes to this tap will be documented in this file.
 
-## [Unreleased]
+## 2026-04-28
+
+### Changed
+
+- `llm-wiki` formula updated to v0.2.0 — confidence field, lifecycle-aware
+  search ranking, backlinks, `wiki_lint`, redaction, Louvain graph communities,
+  cross-wiki links, `wiki_export`, CommonMark body links, `wiki_resolve`
 
 ## 2026-04-26
 
