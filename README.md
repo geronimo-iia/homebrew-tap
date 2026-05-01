@@ -12,7 +12,7 @@ brew tap geronimo-iia/tap
 
 | Formula  | Install                 | Status                | Description                                       |
 | -------- | ----------------------- | --------------------- | ------------------------------------------------- |
-| llm-wiki | `brew install llm-wiki` | 0.2.0                 | Git-backed wiki engine with MCP server            |
+| llm-wiki | `brew install llm-wiki` | 0.3.0                 | Git-backed wiki engine with MCP server            |
 | agentctl | `brew install agentctl` | available             | CLI for agent hub validation and skill management |
 
 ## Update

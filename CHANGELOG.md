@@ -2,6 +2,12 @@
 
 All notable changes to this tap will be documented in this file.
 
+## 2026-05-01
+
+### Changed
+
+- `llm-wiki` formula updated to v0.3.0 — ACP workflows (`research`, `lint`, `graph`, `ingest`, `use`, `help`), in-memory graph cache, configurable `wiki_root` in `wiki.toml`, `wiki_spaces_register` tool (23 MCP tools)
+
 ## 2026-04-28
 
 ### Changed
