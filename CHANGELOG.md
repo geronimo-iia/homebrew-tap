@@ -2,6 +2,12 @@
 
 All notable changes to this tap will be documented in this file.
 
+## 2026-05-04
+
+### Changed
+
+- `llm-wiki` formula updated to v0.4.0 — petgraph-live Phase 3: `articulation-point`, `bridge`, `periphery` lint rules; `diameter`, `radius`, `center`, `structural_note` stats fields; `bincode+zstd` snapshot format; graph warm-start via `WikiGraphCache`
+
 ## 2026-05-01
 
 ### Changed
