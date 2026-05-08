@@ -1,0 +1,100 @@
+name: Update llm-wiki formula
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [update-llm-wiki]
+
+jobs:
+  update-formula:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get latest release
+        id: release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG=$(gh release view --repo geronimo-iia/llm-wiki --json tagName -q '.tagName')
+          VERSION="${TAG#v}"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Download assets and compute SHA256
+        id: shas
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="${{ steps.release.outputs.tag }}"
+          TMPDIR=$(mktemp -d)
+          for asset in aarch64-apple-darwin.tar.gz x86_64-apple-darwin.tar.gz aarch64-unknown-linux-gnu.tar.gz x86_64-unknown-linux-gnu.tar.gz; do
+            gh release download "$TAG" --repo geronimo-iia/llm-wiki --pattern "$asset" --dir "$TMPDIR"
+            SHA=$(sha256sum "$TMPDIR/$asset" | awk '{print $1}')
+            KEY=$(echo "$asset" | sed 's/[.-]/_/g')
+            echo "${KEY}=$SHA" >> "$GITHUB_OUTPUT"
+          done
+
+      - name: Update formula
+        env:
+          VERSION: ${{ steps.release.outputs.version }}
+          TAG: ${{ steps.release.outputs.tag }}
+          SHA_AARCH64_MACOS: ${{ steps.shas.outputs.aarch64_apple_darwin_tar_gz }}
+          SHA_X86_64_MACOS: ${{ steps.shas.outputs.x86_64_apple_darwin_tar_gz }}
+          SHA_AARCH64_LINUX: ${{ steps.shas.outputs.aarch64_unknown_linux_gnu_tar_gz }}
+          SHA_X86_64_LINUX: ${{ steps.shas.outputs.x86_64_unknown_linux_gnu_tar_gz }}
+        run: |
+          cat > Formula/llm-wiki.rb <<EOF
+          class LlmWiki < Formula
+            desc "Git-backed wiki engine with MCP server"
+            homepage "https://github.com/geronimo-iia/llm-wiki"
+            version "$VERSION"
+            license "MIT OR Apache-2.0"
+
+            on_macos do
+              if Hardware::CPU.arm?
+                url "https://github.com/geronimo-iia/llm-wiki/releases/download/$TAG/aarch64-apple-darwin.tar.gz"
+                sha256 "$SHA_AARCH64_MACOS"
+              else
+                url "https://github.com/geronimo-iia/llm-wiki/releases/download/$TAG/x86_64-apple-darwin.tar.gz"
+                sha256 "$SHA_X86_64_MACOS"
+              end
+            end
+
+            on_linux do
+              if Hardware::CPU.arm?
+                url "https://github.com/geronimo-iia/llm-wiki/releases/download/$TAG/aarch64-unknown-linux-gnu.tar.gz"
+                sha256 "$SHA_AARCH64_LINUX"
+              else
+                url "https://github.com/geronimo-iia/llm-wiki/releases/download/$TAG/x86_64-unknown-linux-gnu.tar.gz"
+                sha256 "$SHA_X86_64_LINUX"
+              end
+            end
+
+            def install
+              bin.install "llm-wiki"
+            end
+
+            test do
+              assert_match version.to_s, shell_output("#{bin}/llm-wiki --version")
+            end
+          end
+          EOF
+          # Remove leading spaces from heredoc
+          sed -i 's/^          //' Formula/llm-wiki.rb
+
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "chore: bump llm-wiki to ${{ steps.release.outputs.version }}"
+          branch: chore/bump-llm-wiki-${{ steps.release.outputs.version }}
+          title: "chore: bump llm-wiki to ${{ steps.release.outputs.version }}"
+          body: |
+            Automated formula update for llm-wiki ${{ steps.release.outputs.tag }}.
+
+            **Changes:**
+            - Updated `Formula/llm-wiki.rb` (version, URLs, SHA256)
+          labels: automated
