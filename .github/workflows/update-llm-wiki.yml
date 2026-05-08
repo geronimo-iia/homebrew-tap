@@ -87,7 +87,7 @@ jobs:
           sed -i 's/^          //' Formula/llm-wiki.rb
 
       - name: Create pull request
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v8
         with:
           commit-message: "chore: bump llm-wiki to ${{ steps.release.outputs.version }}"
           branch: chore/bump-llm-wiki-${{ steps.release.outputs.version }}
