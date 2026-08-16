@@ -1,26 +1,26 @@
 class LlmWiki < Formula
   desc "Git-backed wiki engine with MCP server"
   homepage "https://github.com/geronimo-iia/llm-wiki"
-  version "0.5.8"
+  version "0.5.9"
   license "MIT OR Apache-2.0"
 
   on_macos do
     if Hardware::CPU.arm?
-      url "https://github.com/geronimo-iia/llm-wiki/releases/download/v0.5.8/aarch64-apple-darwin.tar.gz"
-      sha256 "d780f4b3976f6b640915011bb0c67ce3355c5d669a5c486411487fac6fd0a3b4"
+      url "https://github.com/geronimo-iia/llm-wiki/releases/download/v0.5.9/aarch64-apple-darwin.tar.gz"
+      sha256 "d679e3424d2bf357107f22cb0cf084145d68f0413ab5514c9433f458c43fc72b"
     else
-      url "https://github.com/geronimo-iia/llm-wiki/releases/download/v0.5.8/x86_64-apple-darwin.tar.gz"
-      sha256 "3cdb248df0265b709346b2f92269f69130d3c3134e8c0bc705feb01e764aad72"
+      url "https://github.com/geronimo-iia/llm-wiki/releases/download/v0.5.9/x86_64-apple-darwin.tar.gz"
+      sha256 "e396bc971068a2822dcc5e04c6bc2ae8af4e2ad3eaa8c10f8122cfc874841119"
     end
   end
 
   on_linux do
     if Hardware::CPU.arm?
-      url "https://github.com/geronimo-iia/llm-wiki/releases/download/v0.5.8/aarch64-unknown-linux-gnu.tar.gz"
-      sha256 "a86360ce504e4255210b0caf9292d372568b1ff0ec70bf9936e2b30b095728aa"
+      url "https://github.com/geronimo-iia/llm-wiki/releases/download/v0.5.9/aarch64-unknown-linux-gnu.tar.gz"
+      sha256 "66efedf3f72d28140c1931ef46a0424de8ce9f009f6351844a1c094ea32c5857"
     else
-      url "https://github.com/geronimo-iia/llm-wiki/releases/download/v0.5.8/x86_64-unknown-linux-gnu.tar.gz"
-      sha256 "640ce4728c291268bde7eccd5465e00c33cb7853cef65c449c10346ba6f7cac5"
+      url "https://github.com/geronimo-iia/llm-wiki/releases/download/v0.5.9/x86_64-unknown-linux-gnu.tar.gz"
+      sha256 "83820f36b49aa7542af35a16d7273f149082821ed393ad4d9f59abdc37db90b0"
     end
   end
 
